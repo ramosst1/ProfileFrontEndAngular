@@ -1,0 +1,21 @@
+<html>
+<TITle>Widget Solutions</TITle>
+<header>
+    <div class="container">
+        <a href="#" class="logo">Widget Solutions</a>
+        <nav>
+            <ul>
+                <li><button mat-button routerLink="/">Home</button></li>
+                <li><button mat-button routerLink="/AboutUs">About Us</button></li>
+                <li><button mat-button routerLink="/ProfileList">Profiles</button></li>
+                <li><button mat-button (click)="openDialog()" >Log In</button></li>
+                
+            </ul>
+        </nav>
+    </div>
+</header>
+
+<div class="container">
+    <router-outlet></router-outlet>
+</div>
+</html>

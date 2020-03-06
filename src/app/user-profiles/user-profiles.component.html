@@ -1,0 +1,69 @@
+
+<div >
+
+    <div class="content-navleft">
+        <strong>&nbsp;</strong> 
+    </div>
+    <div class=content-body>
+        <form [formGroup]="uxFormProfiles">
+        <h1>{{title}}</h1>
+        <p>User Profiles 
+            <mat-button-toggle-group formControlName="uxProfileActiveFilter">
+                <mat-button-toggle value="true" checked (click)="FilterProfilesClick(true)">Active</mat-button-toggle>
+                <mat-button-toggle value="false" (click)="FilterProfilesClick(false)">Inactive</mat-button-toggle>
+                <mat-button-toggle value="" (click)="FilterProfilesClick()">All</mat-button-toggle>
+            </mat-button-toggle-group>
+            
+            &nbsp; &nbsp; <button mat-flat-button (click)="openDialog()" color="primary">Add A Profile</button>
+
+        </p>
+    </form>
+
+        <div style="height: 500px;overflow: auto">
+            <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" >
+                    <!-- Position Column -->
+                    <ng-container matColumnDef="ProfileId">
+                        <th mat-header-cell *matHeaderCellDef style="width: 10%;"> <strong> Profile Id </strong></th>
+                        <td mat-cell *matCellDef="let profile"> {{profile.profileId}}</td>
+                    </ng-container>
+                    
+                    <!-- Name Column -->
+                    <ng-container matColumnDef="name" >
+                        <th mat-header-cell *matHeaderCellDef> <strong>Name</strong> </th>
+                        <td mat-cell *matCellDef="let profile"> 
+                            {{profile.firstName}} {{profile.lastName}}
+                        </td>
+                    </ng-container>
+
+                    <ng-container matColumnDef="Status"   >
+                        <th mat-header-cell *matHeaderCellDef style="width: 10%;"> 
+                            <strong *ngIf="uxFormProfiles.controls.uxProfileActiveFilter.value === ''">Status </strong> 
+                            &nbsp;
+                        </th>
+                        <td mat-cell *matCellDef="let profile"> 
+                            <strong *ngIf="uxFormProfiles.controls.uxProfileActiveFilter.value === ''" style="color: lightgray;" >
+                                {{profile.active? 'Active': 'Inactive'}} 
+                            </strong>
+                            &nbsp;
+                        </td>
+                    </ng-container>
+                    
+                    <!-- Action Column -->
+                    <ng-container matColumnDef="Action"> 
+                        <th mat-header-cell *matHeaderCellDef class="AlignCenter" style="width: 20%;"><strong>Action</strong> </th>
+                        <td mat-cell *matCellDef="let profile" class="AlignCenter">
+                            <button mat-raised-button (click)="editProfileClick(profile)" color="primary">edit</button>
+                            &nbsp;
+                            <button mat-raised-button (click)="deleteProfileClick(profile)" color="primary">delete</button>
+                        </td>
+                    </ng-container>
+                    
+                    <tr mat-header-row *matHeaderRowDef="['ProfileId', 'name', 'Status', 'Action']; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: ['ProfileId', 'name', 'Status', 'Action'];"></tr>
+            </table>
+        </div>
+    </div>
+
+</div>
+
+

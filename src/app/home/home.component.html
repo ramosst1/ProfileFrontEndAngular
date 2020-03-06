@@ -1,0 +1,75 @@
+    <div class="content-navleft">
+        <strong>&nbsp;</strong> 
+    </div>
+    <div class="content-body" >
+            <h1>Welcome!</h1>
+
+            <div >
+                <div style="float: left; width: 50%;">
+                    You've clicked 
+                    <span (click)="inCrementCounterClick(-1)">&lt;</span> 
+                    {{clickCounter}} 
+                    <span (click)="inCrementCounterClick(1)">&gt;</span>
+                    times.
+                    <a [routerLink]="" (click)="resetCounter()">Reset Counter</a>
+                    <br>&nbsp;<br>
+                    <div>
+                        <form [formGroup]="uxFormInfo">
+                            <mat-form-field >
+                                <input matInput required placeholder="First Name"   formControlName="uxFirstName" >
+                            </mat-form-field>            
+                            <mat-form-field >
+                                <input matInput required placeholder="Last Name" formControlName="uxLastName" >
+                            </mat-form-field>
+                            <br>
+                            <mat-form-field>
+                                <input required matInput [matDatepicker]="picker" placeholder="Choose a date" formControlName="uxDatePicked">
+                                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                                <mat-datepicker #picker></mat-datepicker>
+                            </mat-form-field>
+                            <br>            
+                            <mat-form-field >
+                                <textarea matInput required placeholder="Type in your information" formControlName="uxYourInfo" 
+                                    style="width:100%;" cols="500" rows="10"
+                                >
+                                </textarea> 
+                            </mat-form-field>
+                            <br>
+                            <button mat-raised-button color="primary" type="reset" (click)="resetPersonInfoFormClick();">Reset</button>
+                        </form>
+                    </div>
+                        
+                
+                </div>
+
+
+                <div style="float: left;width:49%"
+                    [ngStyle]="{
+                        'background-color': clickCounter > 4? 'lightgray': 'whitesmoke',
+                        'border':           clickCounter > 4? '1px solid lightgray': '1px solid gray'
+                    }"            
+                >
+                    <div  >
+                        <ng-template  [ngIf]="clickCounter > 4" [ngIfElse]="none">
+                            The click counter is greater than 4.
+                        </ng-template>
+                        <ng-template #none>
+                            The click counter is less than 4.
+                        </ng-template>
+                        <br>&nbsp;<br>
+                        <div  >
+                            <div style="float: left; ">
+                                <strong>Hi</strong> {{FormInfoControls.uxFirstName.value}}  {{FormInfoControls.uxLastName.value}}
+                                <br>&nbsp;<br>
+                                <strong>Date Selected: </strong><br>
+                                {{FormInfoControls.uxDatePicked.value.toLocaleString("en-US", { dateStyle: "long" })}}
+                                <br>&nbsp;<br>
+                                <strong>The information you typed: </strong><br>
+                                <pre>{{FormInfoControls.uxYourInfo.value}}</pre>
+                                
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>

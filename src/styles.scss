@@ -1,0 +1,159 @@
+@import '~@angular/material/prebuilt-themes/deeppurple-amber.css';
+
+$primary: rgb(111,0,255);
+
+body {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+    max-width: 1800px;
+
+}
+
+pre {
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 16px;
+}
+
+.container {
+    margin:0;
+    font-family: Arial, Helvetica, sans-serif;
+    font-size:18px;
+}
+
+
+
+header {
+    background: $primary;
+    padding: 1em 0;
+    max-width: 1800px;
+
+    a{
+        color:white;
+        text-decoration: none;
+    };
+
+    a.logo{
+        font-weight: bold;
+    };
+
+    nav {
+        float:right;
+
+        span {
+            font-size:20px;
+            color:white;
+            text-decoration: none;
+                padding: 1em;
+
+        }
+        ul {
+            list-style-type: none;
+            margin:0;
+            display:flex
+        }
+
+        li a {
+            padding: 1em;
+            
+            &:hover {
+                background: darken($primary,10%);
+
+            }
+        }
+    }
+}
+
+h {
+    margin-top: zem;
+}
+
+table {
+    width:100%;
+
+    .AlignLeft {
+        text-align: left;
+    }
+
+    .AlignRight {
+        text-align: right;
+    }
+    .AlignCenter {
+        text-align: center;
+    }
+
+    th {
+        font-size: 20px;
+        white-space: nowrap;
+        strong {
+            font-size: 18px;
+            color: darken($primary,10%);
+            padding: 0px 5px 4px 5px;
+    
+        }
+
+    
+    }
+    th.AlignRight {
+        text-align: right;
+    }
+    th.AlignCenter {
+        text-align: center;
+    }
+
+    .AlignRight {
+        text-align: right;
+    }
+    .AlignCenter {
+        text-align: center;
+    }
+
+    td {
+        margin: 0px;
+        padding: 0px 5px 4px 5px;
+        border-bottom: lightgray solid 1px;
+         
+    }
+
+}
+
+.AlignCenter {
+    text-align: center;
+}
+
+.content-navleft {
+    width: 250px;
+    height:500px;
+    float: left;
+    background: rgb(211, 179, 253);
+    padding: 10px;
+}
+
+.content-body {
+    width: 70%;
+    float: left;
+    padding: 10px;
+
+}
+
+.title-header{
+    background: $primary;
+    padding: 1em 0;
+    color: white;
+    text-align: center;
+
+}
+
+html, body { height: 100%; }
+body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+
+.example-section {
+    display: flex;
+    align-content: center;
+    align-items: center;
+    height: 60px;
+  }
+  
+  .example-margin {
+    margin: 0 10px;
+  }
