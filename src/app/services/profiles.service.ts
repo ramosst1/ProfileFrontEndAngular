@@ -1,22 +1,14 @@
 import { Injectable } from '@angular/core';
-//import {Address, AddressTypes} from '../dtos/AddressDTO'
-import {Profile, ProfileAddress} from '../dtos/ProfileDTO'
+import {Profile} from '../dtos/ProfileDTO'
 import {environment} from '../../environments/environment'
-import { HttpClient, HttpParams, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpErrorResponse  } from '@angular/common/http';
 import { Observable, throwError  } from 'rxjs';
-import { catchError, retry } from 'rxjs/operators'
-interface PageResponse {
-    errorMessage: string [];
-    success: boolean;
-}
+import { catchError  } from 'rxjs/operators';
 
-export class ProfileResponse implements PageResponse {
-
-
-    errorMessage = new Array();
-    success= false;
-    profiles: Profile[] = new Array();
-    addresses: ProfileAddress[] = new Array();
+export class ErrorMessage {
+    statusCode: string;
+    fieldName: string;
+    message: string;
 }
 
 
@@ -34,94 +26,54 @@ export class ProfilesService {
 
   constructor(private http: HttpClient) {}
 
-  private CurrentProfiles: Profile[] = new Array();
-  private CurrentProfileResponse: ProfileResponse;
+  public getProfiles(active?: boolean): Observable<Profile[]>  {
 
+    return this.http
+      .get<Profile[]>(environment.URLServicesProfile)
+      .pipe(
+        catchError(this.handleError)
+      )
 
-  public getProfiles(active?: boolean) {
-
-    this.http
-      .get(environment.URLServicesProfile)
-      .subscribe((data: Profile[]) => {
-        this.CurrentProfiles = data;
-      });
-
-    return this.http.get(environment.URLServicesProfile)
-    .pipe(
-      catchError(this.handleError)
-    );
   }
 
-  public addProfile(profile: Profile) {
-    return this.http.put(
+  public getProfile(profileId: Number): Observable<Profile> {
+
+      return this.http.get<Profile>(`${environment.URLServicesProfile}/${profileId}`)
+      .pipe(
+        catchError(this.handleError)
+      )
+
+  }
+
+  public addProfile(profile: Profile): Observable<Profile> {
+    return this.http.put<Profile>(
       environment.URLServicesProfile,
       profile, httpOptions
+    ).pipe(
+      catchError(this.handleError)
     )
   }
 
-  public deleteProfile(aProfile: Profile) {
-    let URLGetProfile = environment.URLServicesProfile;
+  public deleteProfile(aProfile: Profile): Observable<boolean>{
+    let URLGetProfile = `${environment.URLServicesProfile}/${aProfile.profileId}`;
 
-    let ProfileParams = new HttpParams().set(
-      "profileId",
-      aProfile.profileId.toString()
-    );
+    return this.http.delete<boolean>(URLGetProfile)
+    .pipe(
+      catchError(this.handleError)
+    )
 
-    let options = { params: ProfileParams };
-    return this.http.delete(`${URLGetProfile}/${aProfile.profileId}`);
   }
 
-  public updateProfile(profile: Profile) {
-    let ProfileToUpdate: Profile;
+  public updateProfile(profile: Profile): Observable<any> {
 
-    let URLGetProfile = environment.URLServicesProfile;
-
-
-    this.http
-      .post(URLGetProfile, profile, httpOptions)
-      .subscribe((data: Profile) => {
-//        if (data.success) {
-          ProfileToUpdate = data;
-
-          ProfileToUpdate.active = profile.active;
-          ProfileToUpdate.firstName = profile.firstName;
-          ProfileToUpdate.lastName = profile.lastName;
-
-          let PrimaryAddress = ProfileToUpdate.addresses.find(
-            aItem => aItem.isPrimary === true
-          );
-
-          let PrimaryAddressNew = profile.addresses.find(
-            aItem => aItem.isPrimary === true
-          );
-
-          if (PrimaryAddress) {
-            PrimaryAddress.address1 = PrimaryAddressNew.address1;
-            PrimaryAddress.address2 = PrimaryAddressNew.address2;
-            PrimaryAddress.city = PrimaryAddressNew.city;
-            PrimaryAddress.stateAbrev = PrimaryAddressNew.stateAbrev;
-            PrimaryAddress.zipCode = PrimaryAddressNew.zipCode;
-
-            ProfileToUpdate.addresses = new Array(PrimaryAddress);
-          } else {
-            PrimaryAddressNew.profileId = profile.profileId;
-            ProfileToUpdate.addresses = new Array(PrimaryAddressNew);
-          }
-
-          this.SendUpdateProfile(ProfileToUpdate).subscribe(
-            (data: ProfileResponse) => {
-              // Rignt now do nothing
-            }
-          );
-//        }
-      });
-  }
-
-
-  private SendUpdateProfile(aProfile: Profile) {
     let URLUpdateProfile = environment.URLServicesProfile;
 
-    return this.http.post(`${URLUpdateProfile}/`, aProfile);
+    return this.http.post<Profile>(`${URLUpdateProfile}/`, profile)
+    .pipe(
+      catchError(this.handleError)
+
+    )
+
   }
 
   private handleError(error: HttpErrorResponse) {
@@ -131,13 +83,11 @@ export class ProfilesService {
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
-      console.error(
-        `Backend returned code ${error.status}, ` +
-        `body was: ${error.error}`);
+      return throwError(error.error)
     }
     // return an observable with a user-facing error message
     return throwError(
-      'Something bad happened; please try again later.');
+      'An unexpected error occured. Please try again later.');
   };
 }
 

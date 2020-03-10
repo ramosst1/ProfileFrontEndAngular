@@ -3,9 +3,8 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { UserProfilesComponent } from '../user-profiles/user-profiles.component';
 import {Profile, ProfileAddress} from '../dtos/ProfileDTO'
-//import { AddressTypes } from '../dtos/AddressDTO';
 import { AddressService, State, StatesResponse } from '../services/address.service'
-import { ProfilesService, ProfileResponse } from '../services/profiles.service';
+import { ProfilesService } from '../services/profiles.service';
 
 export interface DialogData {
   ProfileId: number;
@@ -27,6 +26,7 @@ export class ProfileFormComponent implements OnInit  {
   SelectedProfile: Profile;
 
   StatesLists: State[];
+  errorMessages: Array<object> = [];
 
   constructor(
     private aProfileService: ProfilesService,
@@ -35,8 +35,6 @@ export class ProfileFormComponent implements OnInit  {
     public dialogProfileRef: MatDialogRef<UserProfilesComponent>,
     @Inject(MAT_DIALOG_DATA) public data: Profile 
   ) { 
-
-
 
     this.uxFormProfileDetail = formBuilder.group({
       uxFirstName: new FormControl("", [Validators.required]),
@@ -53,7 +51,6 @@ export class ProfileFormComponent implements OnInit  {
     this.uxFormControls = this.uxFormProfileDetail.controls
 
     if (data !== null) {
-
       this.SelectedProfile = data;
       this.uxFormControls.uxFirstName.value = data.firstName;
       this.uxFormControls.uxLastName.value = data.lastName;
@@ -99,73 +96,98 @@ export class ProfileFormComponent implements OnInit  {
 
   submitProfile(): void {
 
-    let AProfileResponse: ProfileResponse;
-
 
     if(this.SelectedProfile === undefined) {
 
-       
-      let NewProfile = new Profile();
-
-      NewProfile.firstName = this.uxFormControls.uxFirstName.value;
-      NewProfile.lastName = this.uxFormControls.uxLastName.value;
-      NewProfile.active =this.uxFormControls.uxActive.value === 'true'? true : false;
-
-      {
-
-        let PrimaryAddress = new ProfileAddress();
-        PrimaryAddress.isPrimary = true;
-        PrimaryAddress.address1 = this.uxFormControls.uxAddress1.value;
-        PrimaryAddress.address2 = this.uxFormControls.uxAddress2.value;
-        PrimaryAddress.city = this.uxFormControls.uxCity.value;
-        PrimaryAddress.stateAbrev = this.uxFormControls.uxStateAbrev.value;
-        PrimaryAddress.zipCode = this.uxFormControls.uxZipCode.value;
-
-        NewProfile.addresses = [PrimaryAddress];
-      }
-
-
-      this.aProfileService.addProfile(NewProfile).subscribe(
-        (data: Profile) => {
-
-          if(data != null){
-
-            this.closeProfileDetail();
-
-          }
-        }
-
-
-      );
-
+      this.createProfileAction();
 
 
     } else if(this.SelectedProfile !== undefined) {
 
-      let ProfileToUpdate = {... this.SelectedProfile}
-      ProfileToUpdate.firstName = this.uxFormControls.uxFirstName.value;
-      ProfileToUpdate.lastName = this.uxFormControls.uxLastName.value;
-      ProfileToUpdate.active =this.uxFormControls.uxActive.value === 'true'? true : false;
+      this.updateProfileAction();
+    }
 
-      let PrimaryAddress = ProfileToUpdate.addresses.find(profileFilter => profileFilter.isPrimary === true);
+  }
 
-      if(PrimaryAddress){
+  createProfileAction(): void {
 
-        
-        PrimaryAddress.address1 = this.uxFormControls.uxAddress1.value;
-        PrimaryAddress.address2 = this.uxFormControls.uxAddress2.value;
-        PrimaryAddress.city = this.uxFormControls.uxCity.value;
-        PrimaryAddress.stateAbrev = this.uxFormControls.uxStateAbrev.value;
-        PrimaryAddress.zipCode = this.uxFormControls.uxZipCode.value;
-        
-      }
+    let NewProfile = new Profile();
 
-      this.aProfileService.updateProfile(ProfileToUpdate)
+    NewProfile.firstName = this.uxFormControls.uxFirstName.value;
+    NewProfile.lastName = this.uxFormControls.uxLastName.value;
+    NewProfile.active =this.uxFormControls.uxActive.value === 'true'? true : false;
 
-      this.closeProfileDetail();
+    {
 
+      let PrimaryAddress = new ProfileAddress();
+      PrimaryAddress.isPrimary = true;
+      PrimaryAddress.address1 = this.uxFormControls.uxAddress1.value;
+      PrimaryAddress.address2 = this.uxFormControls.uxAddress2.value;
+      PrimaryAddress.city = this.uxFormControls.uxCity.value;
+      PrimaryAddress.stateAbrev = this.uxFormControls.uxStateAbrev.value;
+      PrimaryAddress.zipCode = this.uxFormControls.uxZipCode.value;
+
+      NewProfile.addresses = [PrimaryAddress];
     }
 
 
+    this.aProfileService.addProfile(NewProfile).subscribe(
+      (data: Profile) => {
+
+        if(data != null){
+
+          this.closeProfileDetail();
+
+        }
+      }, 
+      (error: any) => {
+        
+        this.errorMessages = error;
+      
+      }
+
+
+    );
+
+
   }
+
+  updateProfileAction(): void {
+
+    this.aProfileService.getProfile(this.SelectedProfile.profileId).subscribe(
+      (ProfileToUpdate: Profile) => {
+
+
+        ProfileToUpdate.firstName = this.uxFormControls.uxFirstName.value;
+        ProfileToUpdate.lastName = this.uxFormControls.uxLastName.value;
+        ProfileToUpdate.active =this.uxFormControls.uxActive.value === 'true'? true : false;
+
+        let PrimaryAddress = ProfileToUpdate.addresses.find(profileFilter => profileFilter.isPrimary === true);
+
+        if(PrimaryAddress){
+    
+          PrimaryAddress.address1 = this.uxFormControls.uxAddress1.value;
+          PrimaryAddress.address2 = this.uxFormControls.uxAddress2.value;
+          PrimaryAddress.city = this.uxFormControls.uxCity.value;
+          PrimaryAddress.stateAbrev = this.uxFormControls.uxStateAbrev.value;
+          PrimaryAddress.zipCode = this.uxFormControls.uxZipCode.value;
+          
+        }
+
+        this.aProfileService.updateProfile(ProfileToUpdate).subscribe(
+          (data: Profile) => {
+    
+            this.closeProfileDetail();
+    
+          },
+          error => this.errorMessages = error
+            
+          ) 
+    
+            
+      }
+
+    );
+
+    }
 }

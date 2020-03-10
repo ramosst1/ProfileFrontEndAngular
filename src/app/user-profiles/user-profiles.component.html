@@ -1,13 +1,16 @@
 
 <div >
-
     <div class="content-navleft">
         <strong>&nbsp;</strong> 
     </div>
     <div class=content-body>
         <form [formGroup]="uxFormProfiles">
         <h1>{{title}}</h1>
+        <ul *ngIf="errorMessages.length > 0" class="error-message">
+            <li *ngFor="let error of errorMessages">{{error.message}}</li>
+        </ul>
         <p>User Profiles 
+
             <mat-button-toggle-group formControlName="uxProfileActiveFilter">
                 <mat-button-toggle value="true" checked (click)="FilterProfilesClick(true)">Active</mat-button-toggle>
                 <mat-button-toggle value="false" (click)="FilterProfilesClick(false)">Inactive</mat-button-toggle>

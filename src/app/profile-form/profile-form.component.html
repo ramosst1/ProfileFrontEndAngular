@@ -1,5 +1,8 @@
 <h1>Profile Detail</h1>
 <form  [formGroup]="uxFormProfileDetail">
+    <ul *ngIf="errorMessages.length > 0" class="error-message" >
+        <li *ngFor="let error of errorMessages">{{error.message}}</li>
+    </ul>
     <div>
         <div style="float: left; width: 50%;">
             <mat-form-field >
@@ -52,7 +55,6 @@
 
         <mat-form-field >
             <input matInput  maxlength="5" placeholder="Postal Code" formControlName="uxZipCode" >
-            <!-- <mat-hint align="end">{{uxFormProfileDetail.controls.uxZipCode.value?.length}} / 5</mat-hint> -->
         </mat-form-field>
         <br>
 

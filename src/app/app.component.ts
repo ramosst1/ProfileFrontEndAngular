@@ -9,7 +9,7 @@ import { LoginComponent } from './login/login.component';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'Ramos Software Solutions';
+  title = 'Widget Software solutions';
 
   mytitle:string = "hello World";
 
@@ -25,7 +25,6 @@ export class AppComponent {
 
     dialogRef.afterClosed().subscribe(result => {
       console.log('The dialog was closed');
-//      this.animal = result;
     });  
   }
 }

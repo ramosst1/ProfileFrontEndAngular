@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ProfilesService, ProfileResponse} from '../services/profiles.service';
+import { ProfilesService} from '../services/profiles.service';
 import {MatDialog } from '@angular/material/dialog';
 import { ProfileFormComponent } from '../profile-form/profile-form.component';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
@@ -11,10 +11,12 @@ import {Profile} from '../dtos/ProfileDTO'
   styleUrls: ["./user-profiles.component.scss"]
 })
 export class UserProfilesComponent implements OnInit {
+
   title = "User Profiles";
   profiles: Profile[];
   dataSource: Profile[];
   uxFormProfiles: FormGroup;
+  errorMessages: Array<object> = [];
 
   constructor(
     private profileService: ProfilesService,
@@ -29,14 +31,18 @@ export class UserProfilesComponent implements OnInit {
   ngOnInit() {
     let ProfilterFilteredValue = this.GetProfileFiterValue();
 
-    this.profileService.getProfiles().subscribe((data: Profile[]) => {
-//      if (data.success) {
+
+    this.profileService.getProfiles().subscribe(
+      (data: Profile[]) => {
         this.profiles = data;
         this.dataSource = this.profiles.filter(aItem => {
           return aItem.active === ProfilterFilteredValue;
         });
-//      }
-    });
+     },
+     error => {
+       this.errorMessages = error
+    } 
+    );
   }
 
   openDialog(aProfile?: Profile): void {
@@ -81,7 +87,6 @@ export class UserProfilesComponent implements OnInit {
     let ProfileActiveFilter = this.GetProfileFiterValue();
 
     this.profileService.getProfiles().subscribe((data: Profile[]) => {
-//      if (data.success) {
         this.profiles = data;
 
         this.dataSource = this.profiles.filter(aItem => {
@@ -90,7 +95,6 @@ export class UserProfilesComponent implements OnInit {
             aItem.active === ProfileActiveFilter
           );
         });
-//      }
     });
   }
 
@@ -112,7 +116,8 @@ export class UserProfilesComponent implements OnInit {
             this.RefreshProfileList();
           }
 
-        });
+        }, 
+        error => this.errorMessages = error);
     }
   }
 }
