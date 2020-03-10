@@ -1,15 +1,11 @@
 import { Injectable } from '@angular/core';
-import {Profile} from '../dtos/ProfileDTO'
+import {Profile} from '../dtos/ProfileDTO';
+import {ErrorMessage} from '../dtos/ErrorMessageDTO'
 import {environment} from '../../environments/environment'
 import { HttpClient, HttpHeaders, HttpErrorResponse  } from '@angular/common/http';
 import { Observable, throwError  } from 'rxjs';
 import { catchError  } from 'rxjs/operators';
 
-export class ErrorMessage {
-    statusCode: string;
-    fieldName: string;
-    message: string;
-}
 
 
 const httpOptions = {
@@ -83,9 +79,13 @@ export class ProfilesService {
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
-      return throwError(error.error)
+
+      let ErrorList: ErrorMessage[]
+
+      ErrorList = error.error
+
+      return throwError(ErrorList)
     }
-    // return an observable with a user-facing error message
     return throwError(
       'An unexpected error occured. Please try again later.');
   };

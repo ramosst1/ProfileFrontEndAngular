@@ -4,6 +4,7 @@ import {MatDialog } from '@angular/material/dialog';
 import { ProfileFormComponent } from '../profile-form/profile-form.component';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import {Profile} from '../dtos/ProfileDTO'
+import { ErrorMessage } from '../dtos/ErrorMessageDTO';
 
 @Component({
   selector: "app-user-profiles",
@@ -39,7 +40,7 @@ export class UserProfilesComponent implements OnInit {
           return aItem.active === ProfilterFilteredValue;
         });
      },
-     error => {
+     (error: ErrorMessage[]) => {
        this.errorMessages = error
     } 
     );
@@ -117,7 +118,7 @@ export class UserProfilesComponent implements OnInit {
           }
 
         }, 
-        error => this.errorMessages = error);
+        (error: ErrorMessage[]) => this.errorMessages = error);
     }
   }
 }

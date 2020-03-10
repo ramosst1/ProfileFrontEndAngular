@@ -3,6 +3,7 @@ import { HttpClient, HttpClientModule, HttpResponse, HttpErrorResponse  } from '
 import { Observable, throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { catchError } from 'rxjs/operators';
+import { ErrorMessage } from '../dtos/ErrorMessageDTO';
 
 export interface State {
   StateAbrev: String;
@@ -36,7 +37,11 @@ export class AddressService {
     } else {
       // The backend returned an unsuccessful response code.
       // The response body may contain clues as to what went wrong,
-      return throwError(error.error)
+      let ErrorList: ErrorMessage[]
+
+      ErrorList = error.error
+
+      return throwError(ErrorList)
     }
     // return an observable with a user-facing error message
     return throwError(

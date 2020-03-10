@@ -65,7 +65,7 @@
     </mat-form-field>
 
     <div style="text-align: right;">
-        <button mat-raised-button color="primary" type="submit" (click)="submitProfile();"  
+        <button mat-raised-button color="primary" type="submit" (click)="submitProfile();" *ngIf="IsUnexpectedError == false"  
             [disabled]="(!uxFormProfileDetail.valid) || (uxFormProfileDetail.valid && uxFormProfileDetail.pristine)" 
         >{{SelectedProfile === undefined? 'Add': 'Update'}}</button>
         &nbsp; 

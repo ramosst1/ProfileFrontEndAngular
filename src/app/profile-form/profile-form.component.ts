@@ -1,10 +1,11 @@
 import { Component, Inject, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
-import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
-import { UserProfilesComponent } from '../user-profiles/user-profiles.component';
-import {Profile, ProfileAddress} from '../dtos/ProfileDTO'
-import { AddressService, State } from '../services/address.service'
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
+import { ErrorMessage } from '../dtos/ErrorMessageDTO';
+import { Profile, ProfileAddress } from '../dtos/ProfileDTO';
+import { AddressService, State } from '../services/address.service';
 import { ProfilesService } from '../services/profiles.service';
+import { UserProfilesComponent } from '../user-profiles/user-profiles.component';
 
 export interface DialogData {
   ProfileId: number;
@@ -20,13 +21,14 @@ export interface DialogData {
 export class ProfileFormComponent implements OnInit  {
 
   uxFormProfileDetail: FormGroup;
-
   uxFormControls;
 
   SelectedProfile: Profile;
 
   StatesLists: State[];
   errorMessages: Array<object> = [];
+
+  IsUnexpectedError: boolean = false;
 
   constructor(
     private aProfileService: ProfilesService,
@@ -86,7 +88,13 @@ export class ProfileFormComponent implements OnInit  {
       this.aAddressService.getStates().subscribe((data: State[]) => {
           this.StatesLists = data;
         }, 
-        error => this.errorMessages = error
+        (error: ErrorMessage[]) => {
+          
+          this.IsUnexpectedError = true;
+
+          this.errorMessages = error 
+          
+        }
       );
     }
 
@@ -142,7 +150,7 @@ export class ProfileFormComponent implements OnInit  {
 
         }
       }, 
-      (error: any) => {
+      (error: ErrorMessage[]) => {
         
         this.errorMessages = error;
       
@@ -182,7 +190,7 @@ export class ProfileFormComponent implements OnInit  {
             this.closeProfileDetail();
     
           },
-          error => this.errorMessages = error
+          (error: ErrorMessage[]) => this.errorMessages = error
             
           ) 
     
@@ -192,4 +200,5 @@ export class ProfileFormComponent implements OnInit  {
     );
 
     }
+
 }
