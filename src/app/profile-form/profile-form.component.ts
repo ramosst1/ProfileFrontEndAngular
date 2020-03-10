@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms'
 import {MatDialog, MatDialogRef, MAT_DIALOG_DATA} from '@angular/material/dialog';
 import { UserProfilesComponent } from '../user-profiles/user-profiles.component';
 import {Profile, ProfileAddress} from '../dtos/ProfileDTO'
-import { AddressService, State, StatesResponse } from '../services/address.service'
+import { AddressService, State } from '../services/address.service'
 import { ProfilesService } from '../services/profiles.service';
 
 export interface DialogData {
@@ -83,9 +83,11 @@ export class ProfileFormComponent implements OnInit  {
   populateForm(): void {
 
     if (this.StatesLists === undefined) {
-      this.aAddressService.getStates().subscribe((data: StatesResponse) => {
-        this.StatesLists = data.states;
-      });
+      this.aAddressService.getStates().subscribe((data: State[]) => {
+          this.StatesLists = data;
+        }, 
+        error => this.errorMessages = error
+      );
     }
 
   }
