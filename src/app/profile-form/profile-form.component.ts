@@ -46,8 +46,8 @@ export class ProfileFormComponent implements OnInit  {
       uxAddress2: new FormControl(""),
       uxCity: new FormControl("", [Validators.required]),
       uxStateAbrev: new FormControl("",[Validators.required]),
-      uxZipCode: new FormControl("", [Validators.required]),
-      uxPhoneNumber: new FormControl("914-584-5670", [Validators.required])
+      uxZipCode: new FormControl("", [Validators.required, Validators.minLength(5), Validators.maxLength(5)]),
+      uxPhoneNumber: new FormControl("555-123-5678", [Validators.required])
     });
 
     this.uxFormControls = this.uxFormProfileDetail.controls
@@ -75,6 +75,7 @@ export class ProfileFormComponent implements OnInit  {
     }
 
   }
+
 
   ngOnInit(){
     this.populateForm();

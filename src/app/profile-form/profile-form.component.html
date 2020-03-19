@@ -1,75 +1,85 @@
-<h1>Profile Detail</h1>
-<form  [formGroup]="uxFormProfileDetail">
-    <ul *ngIf="errorMessages.length > 0" class="error-message" >
-        <li *ngFor="let error of errorMessages">{{error.message}}</li>
-    </ul>
-    <div>
-        <div style="float: left; width: 50%;">
+<form [formGroup]="uxFormProfileDetail">
+    <mat-card-header class="matcard-container-header">
+        <mat-card-title class="matcard-container-header">
+            Profile Detail
+        </mat-card-title>
+        <mat-card-subtitle class="matcard-container-header">The user profile detail.</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card>
+        <mat-card-content>
+        <ul *ngIf="errorMessages.length > 0" class="error-message">
+                <li *ngFor="let error of errorMessages">{{error.message}}</li>
+            </ul>
+        </mat-card-content>
+        <mat-card-content>
+                <mat-form-field>
+                    <input matInput required placeholder="First Name" formControlName="uxFirstName">
+                </mat-form-field>
+                <mat-form-field>
+                    <input matInput required placeholder="Last Name" formControlName="uxLastName">
+                </mat-form-field>
+        </mat-card-content>
+        <mat-card-content>
+            <section>
+                <label class="example-margin">Active:</label>
+                <mat-radio-group formControlName="uxActive" required>
+                    <mat-radio-button class="example-margin" value=true>Yes </mat-radio-button>
+                    <mat-radio-button class="example-margin" value=false> No</mat-radio-button>
+                </mat-radio-group>
+            </section>
+
+        </mat-card-content>
+        <mat-card-content>
+            &nbsp; <br>
             <mat-form-field >
-                <input matInput required placeholder="First Name"   formControlName="uxFirstName" >
-            </mat-form-field>            
-        </div>
-        <div style="float: left; width: 50%;">
-            <mat-form-field >
-                <input matInput required placeholder="Last Name" formControlName="uxLastName" >
+                <input matInput required placeholder="Address1" formControlName="uxAddress1">
             </mat-form-field>
-        </div>
-    </div>
-    <div>
-         <section >
-            <label class="example-margin">Active:</label>
-            <mat-radio-group formControlName="uxActive" required>
-                <mat-radio-button class="example-margin" value=true >Yes </mat-radio-button>
-                <mat-radio-button class="example-margin" value=false>  No</mat-radio-button>
-            </mat-radio-group>
-        </section>
-       
-    </div>
-    <div  >
-        &nbsp; <br>
+            <br>
+            <mat-form-field>
+                <input matInput placeholder="Address2" formControlName="uxAddress2">
+            </mat-form-field>
+            <br>
+            <mat-form-field>
+                <input matInput required placeholder="City" formControlName="uxCity">
+            </mat-form-field>
+            <br>
+
+            <mat-form-field>
+                <mat-label>State</mat-label>
+                <mat-select formControlName="uxStateAbrev" required>
+                    <mat-option>--</mat-option>
+                    <mat-option *ngFor="let state of StatesLists" [value]=state.stateAbrev>
+                        {{state.stateName}}
+                    </mat-option>
+                </mat-select>
+                <mat-hint>Selete a State</mat-hint>
+            </mat-form-field>
+
+            <br>&nbsp;<br>
+
+            <mat-form-field>
+                <input matInput maxlength="5" placeholder="Postal Code" formControlName="uxZipCode">
+            </mat-form-field>
+            <br>
+
+        </mat-card-content>
         <mat-form-field>
-            <input matInput required placeholder="Address1" formControlName="uxAddress1">
-        </mat-form-field>
-        <br>
-        <mat-form-field>
-            <input matInput placeholder="Address2" formControlName="uxAddress2">
-        </mat-form-field>
-        <br>
-        <mat-form-field>
-            <input matInput required placeholder="City" formControlName="uxCity">
-        </mat-form-field>
-        <br>
-
-        <mat-form-field>
-            <mat-label>State</mat-label>
-            <mat-select formControlName="uxStateAbrev" required>
-                <mat-option>--</mat-option>
-                <mat-option *ngFor="let state of StatesLists" [value]=state.stateAbrev>
-                    {{state.stateName}} 
-                </mat-option>
-            </mat-select>
-            <mat-hint>Selete a State</mat-hint>
+            <span matPrefix>+1 &nbsp;</span>
+            <input type="tel" required matInput placeholder="Telephone" formControlName="uxPhoneNumber">
         </mat-form-field>
 
-        <br>&nbsp;<br>
-
-        <mat-form-field >
-            <input matInput  maxlength="5" placeholder="Postal Code" formControlName="uxZipCode" >
-        </mat-form-field>
-        <br>
-
-    </div>
-    <mat-form-field >
-        <span matPrefix>+1 &nbsp;</span>
-        <input type="tel" required matInput placeholder="Telephone"  formControlName="uxPhoneNumber">
-    </mat-form-field>
-
-    <div style="text-align: right;">
-        <button mat-raised-button color="primary" type="submit" (click)="submitProfile();" *ngIf="IsUnexpectedError == false"  
-            [disabled]="(!uxFormProfileDetail.valid) || (uxFormProfileDetail.valid && uxFormProfileDetail.pristine)" 
-        >{{SelectedProfile === undefined? 'Add': 'Update'}}</button>
-        &nbsp; 
-        <button mat-raised-button color="primary" type="reset" (click)="closeProfileDetail();">Cancel</button>
-    </div>
+        <mat-card-actions class="matcard-container-action">
+            <button mat-raised-button color="primary" type="submit" (click)="submitProfile();"
+                *ngIf="IsUnexpectedError == false"
+                [disabled]="(!uxFormProfileDetail.valid) || (uxFormProfileDetail.valid && uxFormProfileDetail.pristine)">
+                <mat-icon  aria-hidden="false" aria-label="person icon">{{SelectedProfile === undefined? 'person_add': 'person'}}</mat-icon>
+                {{SelectedProfile === undefined? 'Add': 'Update'}}
+            
+            </button>
+            &nbsp;
+            <button mat-raised-button color="primary" type="reset" (click)="closeProfileDetail();">Cancel</button>
+        </mat-card-actions>
+    </mat-card>
 
 </form>
