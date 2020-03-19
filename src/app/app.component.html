@@ -5,18 +5,18 @@
     <mat-toolbar-row>
         <span>
             <button mat-button routerLink="/">
-                <mat-icon aria-hidden="false" aria-label="Example home icon">home</mat-icon>
+                <mat-icon aria-hidden="false" class="top-nav-icon" aria-label="home icon">home</mat-icon>
                 Home 
             </button>
             <button mat-button routerLink="/AboutUs">About Us</button>
             <button mat-button routerLink="/ProfileList">
-                <mat-icon aria-hidden="false" aria-label="Example home icon">people</mat-icon>
+                <mat-icon aria-hidden="false" class="top-nav-icon" aria-label="profiles icon">people</mat-icon>
                 Profiles
             </button>
         </span>
         <span class="top-nav-spacer"></span>
         <button mat-button (click)="openDialog()">
-            <mat-icon aria-hidden="false" aria-label="Example login icon">person_outline</mat-icon>
+            <mat-icon aria-hidden="false" class="top-nav-icon" aria-label="login icon" >person_outline</mat-icon>
             Log In
         </button>
 
