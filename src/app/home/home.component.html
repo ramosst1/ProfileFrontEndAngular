@@ -1,4 +1,4 @@
-<div class="content-navleft">
+<div class="content-navleft"  style="margin: 0 25px 0 0;padding: 0px;">
     <strong>&nbsp;</strong> 
 </div>
 
@@ -36,8 +36,10 @@
                                 </textarea>
                     </mat-form-field>
                     <br>
-                    <button mat-raised-button color="primary" type="reset"
-                        (click)="resetPersonInfoFormClick();">Reset</button>
+                    <button mat-raised-button color="primary" type="reset" (click)="resetPersonInfoFormClick();">
+                        <mat-icon aria-hidden="false" aria-label="delete">cancel</mat-icon>
+                        Reset
+                    </button>
                 </form>
             </mat-card-content>
         </mat-card-content>
