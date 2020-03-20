@@ -1,7 +1,7 @@
 <form [formGroup]="uxForm">
     <mat-card-header class="matcard-container-header">
         <mat-card-title class="matcard-container-header">
-            Login
+            Sign In
         </mat-card-title>
         <mat-card-subtitle class="matcard-container-header">Please enter your log in credentials.</mat-card-subtitle>
     </mat-card-header>
@@ -46,7 +46,7 @@
                 [disabled]="!uxForm.valid">Log
                 In</button>
             &nbsp;
-            <button mat-raised-button color="primary" type="reset" (click)="cancelLogin();">Cancel</button>
+            <button mat-raised-button color="primary" type="button" (click)="cancelLogin();">Cancel</button>
 
         </mat-card-actions>
 
