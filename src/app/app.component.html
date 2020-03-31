@@ -1,33 +1,36 @@
 <html>
 <TITle>Widget Solutions</TITle>
 <header>
-<mat-toolbar color="primary">
-    <mat-toolbar-row>
-        <span>
-            <button mat-button routerLink="/" class="top-nav-button">
-                <mat-icon aria-hidden="false" class="top-nav-icon" aria-label="home icon">home</mat-icon>
-                Home 
-            </button>
-            <button mat-button routerLink="/ProfileList" class="top-nav-button">
-                <mat-icon aria-hidden="false" class="top-nav-icon" aria-label="profiles icon">people</mat-icon>
-                Profiles
-            </button>
-            <button mat-button routerLink="/AboutUs" class="top-nav-button">
-                <mat-icon aria-hidden="false" class="top-nav-icon" aria-label="about us icon" >fiber_manual_record</mat-icon>
-                About Us
-            </button>
-        </span>
-        <span class="top-nav-spacer"></span>
-        <button mat-button (click)="openDialog()" class="top-nav-button">
-            <mat-icon aria-hidden="false" class="top-nav-icon" aria-label="login icon" >person_outline</mat-icon>
-            Sign In
-        </button>
+    <div>
+        <mat-toolbar color="primary">
+            <mat-toolbar-row>
+                <span>
+                    <button mat-button routerLink="/" class="top-nav-button">
+                        <mat-icon aria-hidden="false" class="top-nav-icon" aria-label="home icon">home</mat-icon>
+                        Home 
+                    </button>
+                    <button mat-button routerLink="/ProfileList" class="top-nav-button">
+                        <mat-icon aria-hidden="false" class="top-nav-icon" aria-label="profiles icon">people</mat-icon>
+                        Profiles
+                    </button>
+                    <button mat-button routerLink="/AboutUs" class="top-nav-button">
+                        <mat-icon aria-hidden="false" class="top-nav-icon" aria-label="about us icon" >fiber_manual_record</mat-icon>
+                        About Us
+                    </button>
+                </span>
+                <span class="top-nav-spacer"></span>
+                <button mat-button (click)="openDialog()" class="top-nav-button">
+                    <mat-icon aria-hidden="false" class="top-nav-icon" aria-label="login icon" >person_outline</mat-icon>
+                    Sign In
+                </button>
 
-    </mat-toolbar-row>
-</mat-toolbar>
+            </mat-toolbar-row>
+        </mat-toolbar>
+    </div>
 
 </header>
-<div class="container">
+<div style="padding: 20px;">
     <router-outlet></router-outlet>
 </div>
+
 </html>

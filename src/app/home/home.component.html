@@ -1,75 +1,90 @@
-<div class="content-navleft"  style="margin: 0 25px 0 0;padding: 0px;">
-    <strong>&nbsp;</strong> 
-</div>
-
-<mat-card-content>
+<div>
+    <mat-card-content>
+        
     <h1>Welcome!</h1>
 
-    <mat-card-content>
-        <mat-card-content style="float: left; width: 40%;">
-            You've clicked
-            <span (click)="inCrementCounterClick(-1)">&lt;</span>
-            {{clickCounter}}
-            <span (click)="inCrementCounterClick(1)">&gt;</span>
-            times.
-            <a [routerLink]="" (click)="resetCounter()">Reset Counter</a>
+    <mat-card class="mat-elevation-z0" >
+        <mat-card-content style="float: left; width: 40%; border-radius: 10px;">
+            <div style="padding-left: 15px;" >
+                You've clicked
+                <span (click)="inCrementCounterClick(-1)">&lt;</span>
+                {{clickCounter}}
+                <span (click)="inCrementCounterClick(1)">&gt;</span>
+                times.
+                <a [routerLink]="" (click)="resetCounter()">Reset Counter</a>
+                <br>&nbsp;<br>
+
+            </div>
+            <mat-card style="border-style: none;" class="mat-elevation-z0" >
+                <mat-card-content class="mat-elevation-z8" style="background-color: whitesmoke; border-radius: 10px; padding: 10px;" >
+                    <mat-card-content style="background-color: whitesmoke; border-radius: 10px"  >
+                    <form [formGroup]="uxFormInfo">
+                        <mat-form-field>
+                            <input matInput required placeholder="First Name" formControlName="uxFirstName">
+                        </mat-form-field>
+                        <mat-form-field>
+                            <input matInput required placeholder="Last Name" formControlName="uxLastName">
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field>
+                            <input required matInput [matDatepicker]="picker" placeholder="Choose a date"
+                                formControlName="uxDatePicked">
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field>
+                            <textarea matInput required placeholder="Type in your information" formControlName="uxYourInfo"
+                                style="width:100%;" cols="500" rows="10">
+                                    </textarea>
+                        </mat-form-field>
+                        <div style="text-align: center;">
+                        <button mat-raised-button color="primary" type="reset" (click)="resetPersonInfoFormClick();"
+                            style="border-radius: 15px; text-align: center;"
+                        >
+                            <mat-icon aria-hidden="false" aria-label="cancel"
+                            >cancel</mat-icon>
+                            Reset
+                        </button>
+                        </div>
+
+                    </form>
+                    </mat-card-content>
+                </mat-card-content>
+    
+            </mat-card>
+        </mat-card-content>
+    </mat-card>
+    <mat-card style="border-style: none;" class="mat-elevation-z0" >
+
+        <mat-card-content style="float: left;width:40%; border-radius: 10px; padding:10px" [ngStyle]="{
+                            'background-color': clickCounter > 4? 'lightgray': 'whitesmoke',
+                            'border':           clickCounter > 4? '1px solid lightgray': '1px solid gray'
+                                
+                            
+                        }" class="mat-elevation-z8">
+        <mat-card-content >
+            <ng-template [ngIf]="clickCounter > 4" [ngIfElse]="none">
+                The click counter is greater than 4.
+            </ng-template>
+            <ng-template #none>
+                The click counter is less than 4.
+            </ng-template>
             <br>&nbsp;<br>
             <mat-card-content>
-                <form [formGroup]="uxFormInfo">
-                    <mat-form-field>
-                        <input matInput required placeholder="First Name" formControlName="uxFirstName">
-                    </mat-form-field>
-                    <mat-form-field>
-                        <input matInput required placeholder="Last Name" formControlName="uxLastName">
-                    </mat-form-field>
-                    <br>
-                    <mat-form-field>
-                        <input required matInput [matDatepicker]="picker" placeholder="Choose a date"
-                            formControlName="uxDatePicked">
-                        <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
-                        <mat-datepicker #picker></mat-datepicker>
-                    </mat-form-field>
-                    <br>
-                    <mat-form-field>
-                        <textarea matInput required placeholder="Type in your information" formControlName="uxYourInfo"
-                            style="width:100%;" cols="500" rows="10">
-                                </textarea>
-                    </mat-form-field>
-                    <br>
-                    <button mat-raised-button color="primary" type="reset" (click)="resetPersonInfoFormClick();">
-                        <mat-icon aria-hidden="false" aria-label="delete">cancel</mat-icon>
-                        Reset
-                    </button>
-                </form>
-            </mat-card-content>
-        </mat-card-content>
+                <mat-card-content style="float: left; ">
+                    <strong>Hi</strong> {{FormInfoControls.uxFirstName.value}} {{FormInfoControls.uxLastName.value}}
+                    <br>&nbsp;<br>
+                    <strong>Date Selected: </strong><br>
+                    {{FormInfoControls.uxDatePicked.value?.toLocaleString("en-US", { dateStyle: "long" })}}
+                    <br>&nbsp;<br>
+                    <strong>The information you typed: </strong><br>
+                    <pre>{{FormInfoControls.uxYourInfo.value}}</pre>
 
-
-        <mat-card-content style="float: left;width:40%" [ngStyle]="{
-                        'background-color': clickCounter > 4? 'lightgray': 'whitesmoke',
-                        'border':           clickCounter > 4? '1px solid lightgray': '1px solid gray'
-                    }">
-            <mat-card-content>
-                <ng-template [ngIf]="clickCounter > 4" [ngIfElse]="none">
-                    The click counter is greater than 4.
-                </ng-template>
-                <ng-template #none>
-                    The click counter is less than 4.
-                </ng-template>
-                <br>&nbsp;<br>
-                <mat-card-content>
-                    <mat-card-content style="float: left; ">
-                        <strong>Hi</strong> {{FormInfoControls.uxFirstName.value}} {{FormInfoControls.uxLastName.value}}
-                        <br>&nbsp;<br>
-                        <strong>Date Selected: </strong><br>
-                        {{FormInfoControls.uxDatePicked.value.toLocaleString("en-US", { dateStyle: "long" })}}
-                        <br>&nbsp;<br>
-                        <strong>The information you typed: </strong><br>
-                        <pre>{{FormInfoControls.uxYourInfo.value}}</pre>
-
-                    </mat-card-content>
                 </mat-card-content>
             </mat-card-content>
         </mat-card-content>
-    </mat-card-content>
+        </mat-card-content>
+    </mat-card>
 </mat-card-content>
+</div>

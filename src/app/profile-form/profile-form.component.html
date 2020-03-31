@@ -1,12 +1,12 @@
 <form [formGroup]="uxFormProfileDetail">
-    <mat-card-header class="matcard-container-header">
+    <mat-card-header class="matcard-container-header mat-elevation-z8" style="border-radius: 10px 10px 0px 0px">
         <mat-card-title class="matcard-container-header">
             Profile Detail
         </mat-card-title>
         <mat-card-subtitle class="matcard-container-header">The user profile detail.</mat-card-subtitle>
     </mat-card-header>
 
-    <mat-card>
+    <mat-card style="border-radius: 0px 0px 10px 10px" class="mat-elevation-z8">
         <mat-card-content>
         <ul *ngIf="errorMessages.length > 0" class="error-message">
                 <li *ngFor="let error of errorMessages">{{error.message}}</li>
@@ -69,8 +69,9 @@
             <input type="tel" required matInput placeholder="Telephone" formControlName="uxPhoneNumber">
         </mat-form-field>
 
-        <mat-card-actions class="matcard-container-action">
+        <mat-card-actions class="matcard-container-action" >
             <button mat-raised-button color="primary" type="submit" (click)="submitProfile();"
+                style="border-radius: 15px;"
                 *ngIf="IsUnexpectedError == false"
                 [disabled]="(!uxFormProfileDetail.valid) || (uxFormProfileDetail.valid && uxFormProfileDetail.pristine)">
                 <mat-icon  aria-hidden="false" aria-label="person icon">{{SelectedProfile === undefined? 'person_add': 'person'}}</mat-icon>
@@ -78,7 +79,7 @@
             
             </button>
             &nbsp;
-            <button mat-raised-button color="primary" type="button" (click)="closeProfileDetail();">
+            <button mat-raised-button color="primary" type="button" (click)="closeProfileDetail();" style="border-radius: 15px;">
                 <mat-icon aria-hidden="false" aria-label="person icon">cancel
                 </mat-icon>
             

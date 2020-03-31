@@ -50,6 +50,7 @@ export class UserProfilesComponent implements OnInit {
     const dialogProfileRef = this.dialogProfileDetail.open(
       ProfileFormComponent,
       {
+        panelClass: 'Test',
         width: "500px",
         data: aProfile == undefined ? null : aProfile
       }
