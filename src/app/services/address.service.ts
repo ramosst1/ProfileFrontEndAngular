@@ -1,14 +1,21 @@
+import { ApiResponseBase } from './../dtos/ApiResponseDTO';
 import { Injectable } from "@angular/core";
-import { HttpClient, HttpClientModule, HttpResponse, HttpErrorResponse  } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { HttpClient, HttpErrorResponse  } from '@angular/common/http';
+import { throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { catchError } from 'rxjs/operators';
 import { ErrorMessage } from '../dtos/ErrorMessageDTO';
 
-export interface State {
+export class StatesResponse extends ApiResponseBase {
+
+  states: StateModel[]
+}
+
+export interface StateModel {
   StateAbrev: String;
   StateName: String;
 }
+
 
 @Injectable({
   providedIn: "root"

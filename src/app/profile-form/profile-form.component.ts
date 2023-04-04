@@ -1,9 +1,11 @@
+import { ProfileAddressUpdateModel, ProfileResponse } from './../dtos/ProfileDTO';
+import { StatesResponse } from './../services/address.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { ErrorMessage } from '../dtos/ErrorMessageDTO';
-import { Profile, ProfileAddress } from '../dtos/ProfileDTO';
-import { AddressService, State } from '../services/address.service';
+import { ProfileModel, ProfileAddressModel, ProfileAddressCreateModel, ProfileCreateModel, ProfileUpdateModel } from '../dtos/ProfileDTO';
+import { AddressService, StateModel } from '../services/address.service';
 import { ProfilesService } from '../services/profiles.service';
 import { UserProfilesComponent } from '../user-profiles/user-profiles.component';
 
@@ -23,9 +25,9 @@ export class ProfileFormComponent implements OnInit  {
   uxFormProfileDetail: FormGroup;
   uxFormControls;
 
-  SelectedProfile: Profile;
+  SelectedProfile: ProfileModel;
 
-  StatesLists: State[];
+  StatesLists: StateModel[];
   errorMessages: Array<object> = [];
 
   IsUnexpectedError: boolean = false;
@@ -35,7 +37,7 @@ export class ProfileFormComponent implements OnInit  {
     private aAddressService: AddressService,
     private formBuilder: FormBuilder,
     public dialogProfileRef: MatDialogRef<UserProfilesComponent>,
-    @Inject(MAT_DIALOG_DATA) public data: Profile 
+    @Inject(MAT_DIALOG_DATA) public data: ProfileModel 
   ) { 
 
     this.uxFormProfileDetail = formBuilder.group({
@@ -86,8 +88,8 @@ export class ProfileFormComponent implements OnInit  {
   populateForm(): void {
 
     if (this.StatesLists === undefined) {
-      this.aAddressService.getStates().subscribe((data: State[]) => {
-          this.StatesLists = data;
+      this.aAddressService.getStates().subscribe((data: StatesResponse) => {
+          this.StatesLists = data.states;
         }, 
         (error: ErrorMessage[]) => {
           
@@ -122,28 +124,28 @@ export class ProfileFormComponent implements OnInit  {
 
   createProfileAction(): void {
 
-    let NewProfile = new Profile();
+    let newProfile = new ProfileCreateModel();
 
-    NewProfile.firstName = this.uxFormControls.uxFirstName.value;
-    NewProfile.lastName = this.uxFormControls.uxLastName.value;
-    NewProfile.active =this.uxFormControls.uxActive.value === 'true'? true : false;
+    newProfile.firstName = this.uxFormControls.uxFirstName.value;
+    newProfile.lastName = this.uxFormControls.uxLastName.value;
+    newProfile.active =this.uxFormControls.uxActive.value === 'true'? true : false;
 
     {
 
-      let PrimaryAddress = new ProfileAddress();
-      PrimaryAddress.isPrimary = true;
-      PrimaryAddress.address1 = this.uxFormControls.uxAddress1.value;
-      PrimaryAddress.address2 = this.uxFormControls.uxAddress2.value;
-      PrimaryAddress.city = this.uxFormControls.uxCity.value;
-      PrimaryAddress.stateAbrev = this.uxFormControls.uxStateAbrev.value;
-      PrimaryAddress.zipCode = this.uxFormControls.uxZipCode.value;
+      let primaryAddress = new ProfileAddressCreateModel();
+      primaryAddress.isPrimary = true;
+      primaryAddress.address1 = this.uxFormControls.uxAddress1.value;
+      primaryAddress.address2 = this.uxFormControls.uxAddress2.value;
+      primaryAddress.city = this.uxFormControls.uxCity.value;
+      primaryAddress.stateAbrev = this.uxFormControls.uxStateAbrev.value;
+      primaryAddress.zipCode = this.uxFormControls.uxZipCode.value;
 
-      NewProfile.addresses = [PrimaryAddress];
+      newProfile.addresses = [primaryAddress];
     }
 
 
-    this.aProfileService.addProfile(NewProfile).subscribe(
-      (data: Profile) => {
+    this.aProfileService.addProfile(newProfile).subscribe(
+      (data: ProfileResponse) => {
 
         if(data != null){
 
@@ -166,27 +168,35 @@ export class ProfileFormComponent implements OnInit  {
   updateProfileAction(): void {
 
     this.aProfileService.getProfile(this.SelectedProfile.profileId).subscribe(
-      (ProfileToUpdate: Profile) => {
+      (targetedProfile: ProfileResponse) => {
 
+        let primaryAddressToUpdate = targetedProfile.profile.addresses.find(profileFilter => profileFilter.isPrimary === true);
 
-        ProfileToUpdate.firstName = this.uxFormControls.uxFirstName.value;
-        ProfileToUpdate.lastName = this.uxFormControls.uxLastName.value;
-        ProfileToUpdate.active =this.uxFormControls.uxActive.value === 'true'? true : false;
+        let profileToUpdate = new ProfileUpdateModel();
 
-        let PrimaryAddress = ProfileToUpdate.addresses.find(profileFilter => profileFilter.isPrimary === true);
+        profileToUpdate.profileId = this.SelectedProfile.profileId;
+        profileToUpdate.firstName = this.uxFormControls.uxFirstName.value;
+        profileToUpdate.lastName = this.uxFormControls.uxLastName.value;
+        profileToUpdate.active =this.uxFormControls.uxActive.value === 'true'? true : false;
 
-        if(PrimaryAddress){
-    
-          PrimaryAddress.address1 = this.uxFormControls.uxAddress1.value;
-          PrimaryAddress.address2 = this.uxFormControls.uxAddress2.value;
-          PrimaryAddress.city = this.uxFormControls.uxCity.value;
-          PrimaryAddress.stateAbrev = this.uxFormControls.uxStateAbrev.value;
-          PrimaryAddress.zipCode = this.uxFormControls.uxZipCode.value;
-          
+        let primaryAddress = new ProfileAddressUpdateModel();
+
+        if(primaryAddress) {
+          primaryAddress.profileId = this.SelectedProfile.profileId;
+          primaryAddress.addressId = primaryAddressToUpdate.profileId
+          primaryAddress.address1 = this.uxFormControls.uxAddress1.value;
+          primaryAddress.address2 = this.uxFormControls.uxAddress2.value;
+          primaryAddress.city = this.uxFormControls.uxCity.value;
+          primaryAddress.stateAbrev = this.uxFormControls.uxStateAbrev.value;
+          primaryAddress.zipCode = this.uxFormControls.uxZipCode.value;
+          primaryAddress.isPrimary = primaryAddressToUpdate.isPrimary;
+          primaryAddress.isSecondary = primaryAddressToUpdate.isSecondary;
         }
 
-        this.aProfileService.updateProfile(ProfileToUpdate).subscribe(
-          (data: Profile) => {
+        profileToUpdate.addresses.push(primaryAddress);
+
+        this.aProfileService.updateProfile(profileToUpdate).subscribe(
+          (data: ProfileResponse) => {
     
             this.closeProfileDetail();
     
@@ -194,8 +204,6 @@ export class ProfileFormComponent implements OnInit  {
           (error: ErrorMessage[]) => this.errorMessages = error
             
           ) 
-    
-            
       }
 
     );

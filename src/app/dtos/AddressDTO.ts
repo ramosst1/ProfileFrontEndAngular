@@ -4,8 +4,7 @@ import { Injectable } from "@angular/core";
   providedIn: "root"
 })
 
-
-export class Address {
+export class AddressModel {
   addressId: Number;
   isPrimary: boolean;
   isSecondary: boolean;
@@ -15,9 +14,3 @@ export class Address {
   stateAbrev: String;
   zipCode: String;
 }
-
-// export enum AddressTypes {
-//   Primary = 1,
-//   Business = 2
-// }
-

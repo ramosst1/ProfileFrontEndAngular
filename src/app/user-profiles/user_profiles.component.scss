@@ -1,0 +1,13 @@
+$primary: #673ab7;
+
+body {
+    background-color: red;
+
+}
+
+  .Test {
+    background-color: $primary;
+    color: white;
+    padding: 5px;
+    margin: 0px;
+  }

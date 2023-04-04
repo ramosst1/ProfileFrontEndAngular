@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Profile} from '../dtos/ProfileDTO';
+import {ProfilesResponse, ProfileModel, ProfileCreateModel, ProfileUpdateModel, ProfileResponse} from '../dtos/ProfileDTO';
 import {ErrorMessage} from '../dtos/ErrorMessageDTO'
 import {environment} from '../../environments/environment'
 import { HttpClient, HttpHeaders, HttpErrorResponse  } from '@angular/common/http';
@@ -22,27 +22,27 @@ export class ProfilesService {
 
   constructor(private http: HttpClient) {}
 
-  public getProfiles(active?: boolean): Observable<Profile[]>  {
+  public getProfiles(active?: boolean): Observable<ProfilesResponse>  {
 
     return this.http
-      .get<Profile[]>(environment.URLServicesProfile)
+      .get<ProfilesResponse>(environment.URLServicesProfile)
       .pipe(
         catchError(this.handleError)
       )
 
   }
 
-  public getProfile(profileId: Number): Observable<Profile> {
+  public getProfile(profileId: Number): Observable<ProfileResponse> {
 
-      return this.http.get<Profile>(`${environment.URLServicesProfile}/${profileId}`)
+      return this.http.get<ProfileResponse>(`${environment.URLServicesProfile}/${profileId}`)
       .pipe(
         catchError(this.handleError)
       )
 
   }
 
-  public addProfile(profile: Profile): Observable<Profile> {
-    return this.http.put<Profile>(
+  public addProfile(profile: ProfileCreateModel): Observable<ProfileResponse> {
+    return this.http.post<ProfileResponse>(
       environment.URLServicesProfile,
       profile, httpOptions
     ).pipe(
@@ -50,7 +50,7 @@ export class ProfilesService {
     )
   }
 
-  public deleteProfile(aProfile: Profile): Observable<boolean>{
+  public deleteProfile(aProfile: ProfileModel): Observable<boolean>{
     let URLGetProfile = `${environment.URLServicesProfile}/${aProfile.profileId}`;
 
     return this.http.delete<boolean>(URLGetProfile)
@@ -60,11 +60,11 @@ export class ProfilesService {
 
   }
 
-  public updateProfile(profile: Profile): Observable<any> {
+  public updateProfile(profile: ProfileUpdateModel): Observable<ProfileResponse> {
 
     let URLUpdateProfile = environment.URLServicesProfile;
 
-    return this.http.post<Profile>(`${URLUpdateProfile}/`, profile)
+    return this.http.put<ProfileResponse>(`${URLUpdateProfile}/`, profile)
     .pipe(
       catchError(this.handleError)
 

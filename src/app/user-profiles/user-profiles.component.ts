@@ -3,19 +3,19 @@ import { ProfilesService} from '../services/profiles.service';
 import {MatDialog } from '@angular/material/dialog';
 import { ProfileFormComponent } from '../profile-form/profile-form.component';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import {Profile} from '../dtos/ProfileDTO'
+import {ProfilesResponse, ProfileModel} from '../dtos/ProfileDTO'
 import { ErrorMessage } from '../dtos/ErrorMessageDTO';
 
 @Component({
   selector: "app-user-profiles",
-  templateUrl: "./user-profiles.component.html",
-  styleUrls: ["./user-profiles.component.scss"]
+  templateUrl: "./user_profiles.component.html",
+  styleUrls: ["./user_profiles.component.scss"]
 })
 export class UserProfilesComponent implements OnInit {
 
   title = "User Profiles";
-  profiles: Profile[];
-  dataSource: Profile[];
+  profiles: ProfileModel[];
+  dataSource: ProfileModel[];
   uxFormProfiles: FormGroup;
   errorMessages: Array<object> = [];
 
@@ -34,8 +34,8 @@ export class UserProfilesComponent implements OnInit {
 
 
     this.profileService.getProfiles().subscribe(
-      (data: Profile[]) => {
-        this.profiles = data;
+      (data: ProfilesResponse) => {
+        this.profiles = data.profiles;
         this.dataSource = this.profiles.filter(aItem => {
           return aItem.active === ProfilterFilteredValue;
         });
@@ -46,7 +46,7 @@ export class UserProfilesComponent implements OnInit {
     );
   }
 
-  openDialog(aProfile?: Profile): void {
+  openDialog(aProfile?: ProfileModel): void {
     const dialogProfileRef = this.dialogProfileDetail.open(
       ProfileFormComponent,
       {
@@ -88,8 +88,8 @@ export class UserProfilesComponent implements OnInit {
   RefreshProfileList() {
     let ProfileActiveFilter = this.GetProfileFiterValue();
 
-    this.profileService.getProfiles().subscribe((data: Profile[]) => {
-        this.profiles = data;
+    this.profileService.getProfiles().subscribe((data: ProfilesResponse) => {
+        this.profiles = data.profiles;
 
         this.dataSource = this.profiles.filter(aItem => {
           return (
@@ -100,11 +100,11 @@ export class UserProfilesComponent implements OnInit {
     });
   }
 
-  editProfileClick(aProfile: Profile) {
+  editProfileClick(aProfile: ProfileModel) {
     this.openDialog(aProfile);
   }
 
-  deleteProfileClick(profile: Profile) {
+  deleteProfileClick(profile: ProfileModel) {
     let ConfirmResponse = window.confirm(
       "Are you sure you want to delete the record?"
     );

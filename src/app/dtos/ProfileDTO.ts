@@ -1,21 +1,52 @@
 import { Injectable } from '@angular/core';
-import { Address } from '../dtos/AddressDTO';
+import { AddressModel } from '../dtos/AddressDTO';
+import { ApiResponseBase } from './ApiResponseDTO';
 
 @Injectable({
     providedIn: 'root'
   })
 
-  export class ProfileAddress extends Address {
+  export class ProfileAddressModel extends AddressModel {
     profileId: number;
-    addressId: number
-
+    addressId: number;
   }
-  export class Profile {
+
+  export class ProfileAddressCreateModel extends AddressModel {
+    addressId: number;
+  }
+
+  export class ProfileAddressUpdateModel extends AddressModel {
+    profileId: number;
+    addressId: number;
+  }
+
+  export class ProfileResponse extends ApiResponseBase {
+    profile: ProfileModel;
+  }
+
+  export class ProfilesResponse extends ApiResponseBase {
+    profiles: ProfileModel[];
+  }
+
+  export class ProfileModel {
     profileId:number;
     firstName: string;
     lastName: string;
     active:boolean;
-    addresses: ProfileAddress[] = new Array();
-  
+    addresses: ProfileAddressModel[] = new Array();
   }
-  
+
+  export class ProfileCreateModel {
+    firstName: string;
+    lastName: string;
+    active:boolean;
+    addresses: ProfileAddressCreateModel[] = new Array();
+  }
+
+  export class ProfileUpdateModel {
+    profileId:number;
+    firstName: string;
+    lastName: string;
+    active:boolean;
+    addresses: ProfileAddressCreateModel[] = new Array();
+  }
