@@ -7,7 +7,7 @@ import { Injectable } from '@angular/core';
   export class ErrorMessage {
     statusCode: string;
     message: string;
-    fieldName: string;
+//    fieldName: string;
   
   }
   
