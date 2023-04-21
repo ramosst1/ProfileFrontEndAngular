@@ -1,10 +1,10 @@
-import { ApiResponseBase } from './../dtos/ApiResponseDTO';
+import { ApiResponseBase } from '../models/ApiResponseModels';
 import { Injectable } from "@angular/core";
 import { HttpClient, HttpErrorResponse  } from '@angular/common/http';
 import { throwError } from 'rxjs';
 import { environment } from '../../environments/environment';
 import { catchError } from 'rxjs/operators';
-import { ErrorMessage } from '../dtos/ErrorMessageDTO';
+import { ErrorMessage } from '../models/ErrorMessageModels';
 
 export class StatesResponse extends ApiResponseBase {
 

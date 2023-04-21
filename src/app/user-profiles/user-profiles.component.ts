@@ -3,9 +3,9 @@ import { ProfilesService} from '../services/profiles.service';
 import {MatDialog } from '@angular/material/dialog';
 import { ProfileFormComponent } from '../profile-form/profile-form.component';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import {ProfilesResponse, ProfileModel} from '../dtos/ProfileDTO'
-import { ErrorMessage } from '../dtos/ErrorMessageDTO';
-
+import {ProfilesResponse, ProfileModel} from '../models/ProfileModels'
+import { ErrorMessage } from '../models/ErrorMessageModels';
+import { ApiStateResponse, ServiceApiResponse } from './../util/httpRequest/ServiceApiResponse';
 @Component({
   selector: "app-user-profiles",
   templateUrl: "./user_profiles.component.html",
@@ -29,9 +29,27 @@ export class UserProfilesComponent implements OnInit {
     });
   }
 
-  ngOnInit() {
+  async ngOnInit() {
     let ProfilterFilteredValue = this.GetProfileFiterValue();
 
+
+    // const apiStateResponse = new ApiStateResponse();
+
+    // const profileServiceResponse = new ServiceApiResponse(apiStateResponse);
+
+    // console.log(apiStateResponse.loading);
+  
+    // profileServiceResponse.getRequestAsync(this.profileService.getProfiles())
+    // .then((data) => {
+
+    //   console.log("data: " + data)
+    //   console.log("fetch" + (apiStateResponse.response as ProfilesResponse));
+    //   console.log("fetch" + apiStateResponse.loading);
+  
+    //   this.title = apiStateResponse.loading + '';
+    // })
+
+    this.profileService.getProfiles().subscribe( (v) => console.info(v))
 
     this.profileService.getProfiles().subscribe(
       (data: ProfilesResponse) => {
@@ -88,7 +106,9 @@ export class UserProfilesComponent implements OnInit {
   RefreshProfileList() {
     let ProfileActiveFilter = this.GetProfileFiterValue();
 
-    this.profileService.getProfiles().subscribe((data: ProfilesResponse) => {
+
+
+  this.profileService.getProfiles().subscribe((data: ProfilesResponse) => {
         this.profiles = data.profiles;
 
         this.dataSource = this.profiles.filter(aItem => {

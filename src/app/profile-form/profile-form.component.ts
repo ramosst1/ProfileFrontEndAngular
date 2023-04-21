@@ -1,10 +1,10 @@
-import { ProfileAddressUpdateModel, ProfileResponse } from './../dtos/ProfileDTO';
+import { ProfileAddressUpdateModel, ProfileResponse } from '../models/ProfileModels';
 import { StatesResponse } from './../services/address.service';
 import { Component, Inject, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
-import { ErrorMessage } from '../dtos/ErrorMessageDTO';
-import { ProfileModel, ProfileAddressModel, ProfileAddressCreateModel, ProfileCreateModel, ProfileUpdateModel } from '../dtos/ProfileDTO';
+import { ErrorMessage } from '../models/ErrorMessageModels';
+import { ProfileModel, ProfileAddressModel, ProfileAddressCreateModel, ProfileCreateModel, ProfileUpdateModel } from '../models/ProfileModels';
 import { AddressService, StateModel } from '../services/address.service';
 import { ProfilesService } from '../services/profiles.service';
 import { UserProfilesComponent } from '../user-profiles/user-profiles.component';

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import {ProfilesResponse, ProfileModel, ProfileCreateModel, ProfileUpdateModel, ProfileResponse} from '../dtos/ProfileDTO';
-import {ErrorMessage} from '../dtos/ErrorMessageDTO'
+import {ProfilesResponse, ProfileModel, ProfileCreateModel, ProfileUpdateModel, ProfileResponse} from '../models/ProfileModels';
+import {ErrorMessage} from '../models/ErrorMessageModels'
 import {environment} from '../../environments/environment'
 import { HttpClient, HttpHeaders, HttpErrorResponse  } from '@angular/common/http';
 import { Observable, throwError  } from 'rxjs';
