@@ -2,6 +2,13 @@
     <div>
             <mat-card-content>
                 <strong>Will be available soon.</strong>
+
+                <strong>getting data?: {{loadingData}}</strong>
+
+                <button mat-button (click)="loadData()"  color="warn">
+                    <mat-icon aria-hidden="false" aria-label="delete" >delete</mat-icon >
+                </button>
+
             </mat-card-content>
     </div>
 </div>

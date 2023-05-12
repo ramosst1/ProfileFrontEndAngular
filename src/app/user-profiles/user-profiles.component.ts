@@ -33,21 +33,6 @@ export class UserProfilesComponent implements OnInit {
     let ProfilterFilteredValue = this.GetProfileFiterValue();
 
 
-    // const apiStateResponse = new ApiStateResponse();
-
-    // const profileServiceResponse = new ServiceApiResponse(apiStateResponse);
-
-    // console.log(apiStateResponse.loading);
-  
-    // profileServiceResponse.getRequestAsync(this.profileService.getProfiles())
-    // .then((data) => {
-
-    //   console.log("data: " + data)
-    //   console.log("fetch" + (apiStateResponse.response as ProfilesResponse));
-    //   console.log("fetch" + apiStateResponse.loading);
-  
-    //   this.title = apiStateResponse.loading + '';
-    // })
 
     this.profileService.getProfiles().subscribe( (v) => console.info(v))
 
